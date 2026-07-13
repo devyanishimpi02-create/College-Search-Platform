@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>College Details — CollegeFind</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo">
+      <i class="ti ti-school"></i>
+      <div>
+        <span class="logo-title">CollegeFind</span>
+        <span class="logo-sub">India's college discovery platform</span>
+      </div>
+    </div>
+    <button class="theme-toggle" onclick="toggleTheme()">
+      <i class="ti ti-moon" id="themeIcon"></i>
+      <span id="themeText">Dark mode</span>
+    </button>
+  </nav>
+
+  <!-- Back button -->
+  <div class="detail-back">
+    <a href="index.html" class="back-btn">
+      <i class="ti ti-arrow-left"></i> Back to results
+    </a>
+  </div>
+
+  <!-- Detail content -->
+  <div class="detail-wrapper" id="detailContent">
+    <div class="detail-loading">Loading college details...</div>
+  </div>
+
+  <script src="college.js"></script>
+</body>
+</html>

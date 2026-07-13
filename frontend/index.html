@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CollegeFind — Find the right college, without the confusion</title>
+  <link rel="stylesheet" href="style.css?v=3">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo">
+      <i class="ti ti-school"></i>
+      <div>
+        <span class="logo-title">CollegeFind</span>
+        <span class="logo-sub">Built for students 🎓</span>
+      </div>
+    </div>
+    <button class="theme-toggle" onclick="toggleTheme()">
+      <i class="ti ti-moon" id="themeIcon"></i>
+      <span id="themeText">Dark mode</span>
+    </button>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <span class="hero-eyebrow"><i class="ti ti-sparkles"></i> Find your fit, not ads</span>
+    <h1>Stop guessing. Start finding your college.</h1>
+    <p>Verified cutoffs, fees & placements — see exactly where you stand before you apply.</p>
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Try 'B.Tech in Pune' or 'IIM'..." />
+      <button onclick="searchColleges()">
+        <i class="ti ti-search"></i> Find my fit 🚀
+      </button>
+    </div>
+    <div class="filters">
+      <span class="chip active" onclick="filterCourse(this, '')">All</span>
+      <span class="chip" onclick="filterCourse(this, 'B.Tech')">B.Tech</span>
+      <span class="chip" onclick="filterCourse(this, 'MBA')">MBA</span>
+      <span class="chip" onclick="filterCourse(this, 'MCA')">MCA</span>
+      <span class="chip" onclick="filterCourse(this, 'M.Tech')">M.Tech</span>
+    </div>
+
+    <!-- Eligibility filter toggle -->
+    <button class="eligibility-toggle" onclick="toggleEligibilityPanel()">
+      <i class="ti ti-target-arrow"></i> Where can I actually get in?
+    </button>
+
+    <!-- Eligibility filter panel -->
+    <div class="eligibility-panel" id="eligibilityPanel">
+      <div class="eligibility-row">
+        <div class="eligibility-field">
+          <label for="examSelect">Your exam</label>
+          <select id="examSelect" onchange="updateMarksHint()">
+            <option value="jee">JEE Advanced (Rank)</option>
+            <option value="cat">CAT Percentile</option>
+            <option value="mhtcet">MHT-CET Percentile</option>
+            <option value="hsc">HSC %</option>
+          </select>
+        </div>
+        <div class="eligibility-field">
+          <label for="marksInput" id="marksLabel">Enter your marks 🎯</label>
+          <input type="number" id="marksInput" placeholder="e.g. 85" min="0" step="0.01" />
+        </div>
+        <button class="eligibility-btn" onclick="filterByEligibility()">
+          <i class="ti ti-search"></i> Show my colleges
+        </button>
+      </div>
+      <p class="eligibility-hint">We’ll highlight colleges you genuinely qualify for, with a quick read on your odds at each one.</p>
+    </div>
+  </section>
+<div class="stats" id="statsSection">
+
+  <div class="stat">
+    <span class="stat-num" id="collegeCount">0</span>
+    <span class="stat-label">Colleges verified ✅</span>
+  </div>
+
+  <div class="stat">
+    <span class="stat-num" id="stateCount">0</span>
+    <span class="stat-label">States covered 🌍</span>
+  </div>
+
+  <div class="stat">
+    <span class="stat-num" id="examCount">0</span>
+    <span class="stat-label">Exams supported 📚</span>
+  </div>
+
+</div>
+
+  <!-- Results -->
+  <section class="results">
+    <p class="results-label" id="resultsLabel">Showing all colleges</p>
+    <div class="cards" id="results"></div>
+  </section>
+
+  <!-- Floating Guidance Button -->
+  <button class="guidance-fab" onclick="openGuidanceModal()" title="Get Personalised Guidance">
+    <i class="ti ti-user-heart"></i>
+    <span>Get Guidance</span>
+  </button>
+
+  <!-- Guidance Modal -->
+  <div class="modal-overlay" id="guidanceModalOverlay" onclick="closeGuidanceModalOnOverlay(event)">
+    <div class="modal-box guidance-modal-box">
+      <div class="modal-header">
+        <div>
+          <h2><i class="ti ti-user-heart"></i> Personalised Career Guidance</h2>
+          <p class="guidance-modal-sub">Fill in your details — a counselor will reach out within 1–2 days 📞</p>
+        </div>
+        <button class="modal-close" onclick="closeGuidanceModal()">
+          <i class="ti ti-x"></i>
+        </button>
+      </div>
+      <div class="modal-body" id="guidanceModalBody">
+        <div class="guidance-form" id="guidanceForm">
+          <div class="guidance-form-grid">
+
+            <div class="guidance-field">
+              <label><i class="ti ti-user"></i> Full Name <span class="req">*</span></label>
+              <input type="text" id="g_name" placeholder="e.g. Rahul Sharma" />
+            </div>
+
+            <div class="guidance-field">
+              <label><i class="ti ti-phone"></i> Phone Number <span class="req">*</span></label>
+              <input type="tel" id="g_phone" placeholder="e.g. 9876543210" maxlength="10" />
+            </div>
+
+            <div class="guidance-field">
+              <label><i class="ti ti-mail"></i> Email Address</label>
+              <input type="email" id="g_email" placeholder="e.g. rahul@gmail.com" />
+            </div>
+
+            <div class="guidance-field">
+              <label><i class="ti ti-books"></i> Preferred Course <span class="req">*</span></label>
+              <select id="g_course">
+                <option value="">Select a course</option>
+                <option>B.Tech</option>
+                <option>MBA</option>
+                <option>MCA</option>
+                <option>M.Tech</option>
+                <option>B.Sc</option>
+                <option>BBA</option>
+                <option>Other</option>
+              </select>
+            </div>
+
+            <div class="guidance-field">
+              <label><i class="ti ti-certificate"></i> Entrance Exam</label>
+              <select id="g_exam" onchange="updateGuidanceMarksLabel()">
+                <option value="">Select exam</option>
+                <option value="jee">JEE Advanced</option>
+                <option value="cat">CAT</option>
+                <option value="mhtcet">MHT-CET</option>
+                <option value="hsc">HSC (12th %)</option>
+              </select>
+            </div>
+
+            <div class="guidance-field">
+              <label id="g_marks_label"><i class="ti ti-target-arrow"></i> Your Score / Rank</label>
+              <input type="number" id="g_marks" placeholder="e.g. 85" min="0" step="0.01" />
+            </div>
+
+            <div class="guidance-field">
+              <label><i class="ti ti-map-pin"></i> Preferred City / State</label>
+              <input type="text" id="g_location" placeholder="e.g. Pune, Maharashtra" />
+            </div>
+
+            <div class="guidance-field guidance-field-full">
+              <label><i class="ti ti-message"></i> Your Query / Message</label>
+              <textarea id="g_message" rows="3" placeholder="Tell us about your goals or any questions you have..."></textarea>
+            </div>
+
+          </div>
+
+          <div class="guidance-form-footer">
+            <p class="guidance-privacy"><i class="ti ti-lock"></i> Your data is private and will only be used by our counselors.</p>
+            <button class="guidance-submit-btn" onclick="submitGuidanceForm()">
+              <i class="ti ti-send"></i> Submit & Get Guidance
+            </button>
+          </div>
+        </div>
+
+        <!-- Success state -->
+        <div class="guidance-success" id="guidanceSuccess" style="display:none">
+          <div class="guidance-success-icon"><i class="ti ti-circle-check"></i></div>
+          <h3>You're all set! 🎉</h3>
+          <p>A counselor will contact you within <strong>1–2 business days</strong> on your phone/email.</p>
+          <p class="guidance-success-sub">Check your phone for a confirmation SMS shortly.</p>
+          <button class="guidance-close-btn" onclick="closeGuidanceModal()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating compare bar -->
+  <div class="compare-bar" id="compareBar">
+    <div class="compare-bar-inner">
+      <span id="compareCount">0 colleges selected</span>
+      <div class="compare-bar-actions">
+        <button class="compare-clear-btn" onclick="clearCompare()">Clear</button>
+        <button class="compare-go-btn" onclick="openCompareModal()">
+          <i class="ti ti-arrows-left-right"></i> Compare 📊
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Compare modal -->
+  <div class="modal-overlay" id="compareModalOverlay" onclick="closeCompareModalOnOverlay(event)">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2><i class="ti ti-arrows-left-right"></i> Side by side</h2>
+        <button class="modal-close" onclick="closeCompareModal()">
+          <i class="ti ti-x"></i>
+        </button>
+      </div>
+      <div class="modal-body" id="compareModalBody">
+        <!-- Filled by JS -->
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>© 2026 CollegeFind — Helping students make smarter choices 🎓</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
