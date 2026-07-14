@@ -1,5 +1,4 @@
-const API = 'https://college-search-platform-1.onrender.com/api';
-
+const API = "https://college-search-platform-1.onrender.com/api";
 let compareIds = [];
 let collegeCache = {};
 
