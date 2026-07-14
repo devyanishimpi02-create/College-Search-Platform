@@ -1,4 +1,4 @@
-const API = 'http://localhost:5000/api';
+const API = 'https://college-search-platform-1.onrender.com/api';
 
 window.onload = () => {
   const params = new URLSearchParams(window.location.search);
@@ -9,9 +9,17 @@ window.onload = () => {
 
 function fetchCollege(id) {
   fetch(`${API}/colleges/${id}`)
-    .then(res => res.json())
-    .then(data => displayCollege(data))
-    .catch(() => showError());
+  .then(res => {
+    if (!res.ok) {
+      throw new Error("College not found");
+    }
+    return res.json();
+  })
+  .then(data => displayCollege(data))
+  .catch(err => {
+    console.error(err);
+    showError();
+  });
 }
 
 function displayCollege(c) {
