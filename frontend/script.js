@@ -1,4 +1,4 @@
-const API = 'http://localhost:5000/api';
+const API = 'https://college-search-platform-1.onrender.com/api';
 
 let compareIds = [];
 let collegeCache = {};
